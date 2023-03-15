@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="row items-center" elevated style="height: 80px">
+    <q-header class="row items-center" elevated style="height: 70px">
       <q-toolbar>
         <q-toolbar-title
           ><RouterLink class="no-underline" to="/">

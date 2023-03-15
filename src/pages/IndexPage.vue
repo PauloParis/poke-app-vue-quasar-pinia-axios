@@ -43,7 +43,6 @@ import { onMounted } from "vue";
 const pokemonStore = usePokemonStore();
 onMounted(async () => {
   await pokemonStore.getPokemons();
-  //console.log(pokemonStore.info);
 });
 </script>
 

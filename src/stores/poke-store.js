@@ -86,12 +86,47 @@ export const usePokemonStore = defineStore("pokemon", () => {
     };
   };
 
+  const dataGame = ref({
+    id: null,
+    name: null,
+    img: null,
+  });
+  const randomName = ref([]);
+  const estado = ref(false);
+
+  const gamePokemon = async () => {
+    let randomId = Math.round(Math.random() * (151 - 1) + parseInt(1));
+
+    const res = await api.get(`/pokemon/${randomId}`);
+
+    let i = 0;
+    while (i < 3) {
+      let random = Math.round(Math.random() * (151 - 1) + parseInt(1));
+      const res = await api.get(`/pokemon/${random}`);
+      randomName.value.push(res.data.name);
+      i++;
+    }
+
+    dataGame.value = {
+      id: res.data.id,
+      name: res.data.name,
+      img: res.data.sprites.other.dream_world.front_default,
+    };
+    randomName.value.push(dataGame.value.name);
+    randomName.value.sort();
+  };
+
   return {
     getPokemons,
     resultados,
     info,
     poke,
     infoPokemon,
-    pokemones /* resultados, */ /*  info  */,
+    pokemones,
+
+    gamePokemon,
+    dataGame,
+    randomName,
+    estado,
   };
 });
