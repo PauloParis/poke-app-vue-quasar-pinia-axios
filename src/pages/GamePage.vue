@@ -91,10 +91,8 @@ const vaciar = async () => {
 const probando = (name) => {
   if (name == pokemonStore.dataGame.name) {
     estado.value = true;
-    console.log(estado.value);
   } else {
     estado.value = false;
-    console.log(estado.value);
   }
 };
 </script>

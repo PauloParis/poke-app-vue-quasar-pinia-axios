@@ -76,6 +76,7 @@ export const usePokemonStore = defineStore("pokemon", () => {
     }
 
     poke.value = {
+      id: id,
       nombre: res.data.name[0].toUpperCase() + res.data.name.substring(1),
       peso: res.data.weight / 10,
       altura: res.data.height / 10,
@@ -116,6 +117,20 @@ export const usePokemonStore = defineStore("pokemon", () => {
     randomName.value.sort();
   };
 
+  const favorite = ref([]);
+  const fav = ref([]);
+
+  const favoritePokemon = async (ids) => {
+    for (let i = 0; i < ids.length; i++) {
+      //console.log(ids[i]);
+      const res = await api.get(`/pokemon/${ids[i]}`);
+      fav.value.push(res.data);
+    }
+    favorite.value = [...fav.value];
+    fav.value = [];
+    //console.log(favorite.value);
+  };
+
   return {
     getPokemons,
     resultados,
@@ -128,5 +143,8 @@ export const usePokemonStore = defineStore("pokemon", () => {
     dataGame,
     randomName,
     estado,
+
+    favoritePokemon,
+    favorite,
   };
 });

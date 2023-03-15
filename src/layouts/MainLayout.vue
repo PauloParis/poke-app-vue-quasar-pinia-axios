@@ -3,7 +3,11 @@
     <q-header class="row items-center" elevated style="height: 70px">
       <q-toolbar>
         <q-toolbar-title
-          ><RouterLink class="no-underline" to="/">
+          ><RouterLink
+            class="no-underline"
+            to="/"
+            @click="pokemonStore.randomName = []"
+          >
             Pokemon
           </RouterLink></q-toolbar-title
         >
@@ -13,7 +17,11 @@
           </RouterLink></q-toolbar-title
         >
         <q-toolbar-title
-          ><RouterLink class="no-underline" to="/favorite">
+          ><RouterLink
+            class="no-underline"
+            to="/favorite"
+            @click="pokemonStore.randomName = []"
+          >
             Favoritos
           </RouterLink></q-toolbar-title
         >
@@ -28,7 +36,11 @@
   </q-layout>
 </template>
 
-<script setup></script>
+<script setup>
+import { usePokemonStore } from "src/stores/poke-store";
+
+const pokemonStore = usePokemonStore();
+</script>
 <style>
 .no-underline {
   text-decoration: none;
