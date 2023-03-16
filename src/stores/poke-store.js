@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { api } from "src/boot/axios";
+import { Loading } from "quasar";
 
 export const usePokemonStore = defineStore("pokemon", () => {
   const dark = ref(true);
@@ -20,6 +21,7 @@ export const usePokemonStore = defineStore("pokemon", () => {
 
   // obtener los 151 pokemones
   const getPokemons = async () => {
+    Loading.show();
     try {
       for (let i = 1; i <= 151; i++) {
         let poke = await api.get(`/pokemon/${i}`);
@@ -29,6 +31,8 @@ export const usePokemonStore = defineStore("pokemon", () => {
       pokemones.value = [];
     } catch (error) {
       console.log(error);
+    } finally {
+      Loading.hide();
     }
   };
 
@@ -97,40 +101,54 @@ export const usePokemonStore = defineStore("pokemon", () => {
   const estado = ref(false);
 
   const gamePokemon = async () => {
-    let randomId = Math.round(Math.random() * (151 - 1) + parseInt(1));
+    Loading.show();
+    try {
+      let randomId = Math.round(Math.random() * (151 - 1) + parseInt(1));
 
-    const res = await api.get(`/pokemon/${randomId}`);
+      const res = await api.get(`/pokemon/${randomId}`);
 
-    let i = 0;
-    while (i < 3) {
-      let random = Math.round(Math.random() * (151 - 1) + parseInt(1));
-      const res = await api.get(`/pokemon/${random}`);
-      randomName.value.push(res.data.name);
-      i++;
+      let i = 0;
+      while (i < 3) {
+        let random = Math.round(Math.random() * (151 - 1) + parseInt(1));
+        const res = await api.get(`/pokemon/${random}`);
+        randomName.value.push(res.data.name);
+        i++;
+      }
+
+      dataGame.value = {
+        id: res.data.id,
+        name: res.data.name,
+        img: res.data.sprites.other.dream_world.front_default,
+      };
+      randomName.value.push(dataGame.value.name);
+      randomName.value.sort();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      Loading.hide();
     }
-
-    dataGame.value = {
-      id: res.data.id,
-      name: res.data.name,
-      img: res.data.sprites.other.dream_world.front_default,
-    };
-    randomName.value.push(dataGame.value.name);
-    randomName.value.sort();
   };
 
   const favorite = ref([]);
   const fav = ref([]);
 
   const favoritePokemon = async (ids) => {
-    if (ids != null) {
-      ids = ids.reverse();
-      for (let i = 0; i < ids.length; i++) {
-        //console.log(ids[i]);
-        const res = await api.get(`/pokemon/${ids[i]}`);
-        fav.value.push(res.data);
+    Loading.show();
+    try {
+      if (ids != null) {
+        ids = ids.reverse();
+        for (let i = 0; i < ids.length; i++) {
+          //console.log(ids[i]);
+          const res = await api.get(`/pokemon/${ids[i]}`);
+          fav.value.push(res.data);
+        }
+        favorite.value = [...fav.value];
+        fav.value = [];
       }
-      favorite.value = [...fav.value];
-      fav.value = [];
+    } catch (error) {
+      console.log(error);
+    } finally {
+      Loading.hide();
     }
   };
 
