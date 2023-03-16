@@ -158,7 +158,7 @@ let found;
 if (array != null) {
   found = array.find((item) => item == route.params.id);
   if (found != undefined) {
-    estado.value = true;
+    estado.value = !estado.value;
   }
 }
 
@@ -166,7 +166,7 @@ const favorito = async (id) => {
   //si no tengo favoritos
   if (array == null) {
     let idd = [id];
-    estado.value = false;
+    estado.value = !estado.value;
     $q.notify({
       type: "positive",
       message: "Pokemon agregado a favoritos",
@@ -178,7 +178,7 @@ const favorito = async (id) => {
   // si ya tengo guardado ese favorito, lo elimino
   if (found != undefined) {
     array = array.filter((item) => item != found);
-    estado.value = false;
+    estado.value = !estado.value;
     $q.notify({
       type: "negative",
       message: "Pokemon fue sacado de los favoritos",
@@ -187,7 +187,7 @@ const favorito = async (id) => {
   }
   // guardo el favorito
   array.push(id);
-  estado.value = true;
+  estado.value = !estado.value;
   $q.notify({
     type: "positive",
     message: "Pokemon agregado a favoritos",
