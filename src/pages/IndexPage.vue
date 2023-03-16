@@ -2,7 +2,11 @@
   <q-page class="q-ma-md row justify-center">
     <div class="" v-for="(poke, index) in pokemonStore.info" :key="index">
       <div class="col-12">
-        <q-card class="my-card q-ma-md bg-grey-10">
+        <q-card
+          :class="`${
+            $q.dark.isActive ? 'my-card-dark' : 'my-card-light'
+          } q-ma-md no-shadow`"
+        >
           <q-card-section class="row justify-center">
             <!-- <div style="height: 150px"> -->
             <img
@@ -13,10 +17,8 @@
           </q-card-section>
           <q-separator></q-separator>
           <q-card-section class="row justify-between items-center">
-            <div class="col-8 text-h6 text-white">{{ poke.name }}</div>
-            <div class="column items-end text-h6 text-white">
-              #{{ poke.id }}
-            </div>
+            <div class="col-8 text-h6">{{ poke.name }}</div>
+            <div class="column items-end text-h6">#{{ poke.id }}</div>
           </q-card-section>
           <q-card-section class="no-padding">
             <div class="row justify-center">
@@ -39,22 +41,12 @@
 
 <script setup>
 import { usePokemonStore } from "src/stores/poke-store.js";
-import { onMounted } from "vue";
-const pokemonStore = usePokemonStore();
-onMounted(async () => {
-  await pokemonStore.getPokemons();
-});
-</script>
+import { watchEffect } from "vue";
+import { useQuasar } from "quasar";
 
-<style>
-.my-card {
-  width: 240px;
-  height: 300px;
-  border: solid #151414f7;
-  border-width: thin;
-  border-radius: 10px;
-}
-.no-underline {
-  text-decoration: none;
-}
-</style>
+const pokemonStore = usePokemonStore();
+pokemonStore.getPokemons();
+
+const $q = useQuasar();
+watchEffect(() => $q.dark.isActive);
+</script>

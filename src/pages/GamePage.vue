@@ -1,12 +1,12 @@
 <template>
   <q-page class="q-ma-md">
     <div
-      class="text-h3 text-center q-mb-sm text-blue-grey-14 row items-center justify-center"
+      :class="`text-h3 text-center text-blue-grey-14 q-mb-sm  row items-center justify-center`"
     >
       ¿Quien es ese Pokemon?
     </div>
     <div class="row items-center justify-center">
-      <q-card class="my-card q-ma-md bg-grey-13">
+      <q-card class="my-card-game q-ma-md bg-grey-13">
         <q-card-section class="row justify-center">
           <img
             :class="{ 'hidden-pokemon': estado != true }"
@@ -16,10 +16,10 @@
         </q-card-section>
         <q-separator></q-separator>
         <q-card-section class="row justify-between items-center">
-          <div v-if="estado == true" class="col-8 text-h6">
+          <div v-if="estado == true" class="col-8 text-h6 text-dark">
             {{ pokemonStore.dataGame.name }}
           </div>
-          <div v-if="estado == true" class="column items-end text-h6">
+          <div v-if="estado == true" class="column items-end text-h6 text-dark">
             #{{ pokemonStore.dataGame.id }}
           </div>
         </q-card-section>
@@ -50,7 +50,9 @@
         :key="index"
       >
         <div
-          class="row justify-center q-pa-xs q-mt-sm efecto-indicadores"
+          :class="`row justify-center ${
+            $q.dark.isActive ? 'efecto-name-dark' : 'efecto-name-light'
+          } q-pa-xs q-mt-sm`"
           style="width: 300px; border-radius: 10px"
           @click="probando(name)"
         >
@@ -73,14 +75,16 @@
 
 <script setup>
 import { usePokemonStore } from "src/stores/poke-store.js";
-import { onMounted, ref } from "vue";
+import { watchEffect, ref } from "vue";
+import { useQuasar } from "quasar";
 
 const pokemonStore = usePokemonStore();
 const estado = ref("random");
+const $q = useQuasar();
 
-onMounted(async () => {
-  await pokemonStore.gamePokemon();
-});
+watchEffect(() => $q.dark.isActive);
+
+pokemonStore.gamePokemon();
 
 const vaciar = async () => {
   pokemonStore.randomName = [];
@@ -96,29 +100,3 @@ const probando = (name) => {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.my-card {
-  width: 240px;
-  height: 250px;
-  border: solid #151414f7;
-  border-width: thin;
-  border-radius: 10px;
-}
-
-.hidden-pokemon {
-  filter: brightness(0);
-}
-.no-underline {
-  text-decoration: none;
-}
-
-.efecto-indicadores:hover {
-  cursor: pointer;
-  background-color: $blue-grey-10;
-  color: white;
-}
-.efecto-indicadores {
-  background-color: $grey-4;
-}
-</style>

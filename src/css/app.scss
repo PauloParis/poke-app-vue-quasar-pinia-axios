@@ -1,1 +1,113 @@
 // app global css in SCSS form
+
+// LAYOUT
+
+.body--dark {
+  background-color: $dark;
+}
+
+@media only screen and (max-width: 420px) {
+  .tamano-letra {
+    font-size: 15px;
+  }
+}
+
+.my-menu-page {
+  color: $blue-6;
+}
+
+.no-underline {
+  text-decoration: none;
+  color: white;
+}
+.no-underline:hover {
+  color: $blue-6;
+}
+
+.layout-bg-light {
+  background-color: $blue-10;
+}
+
+.layout-bg-dark {
+  background-color: $dark;
+}
+
+// INDEX
+
+.my-card-light {
+  width: 240px;
+  height: 300px;
+  border: solid $grey-7;
+  border-width: thin;
+  border-radius: 10px;
+  background-color: $grey-5;
+  color: black;
+}
+
+.my-card-dark {
+  width: 240px;
+  height: 300px;
+  border: solid #151414f7;
+  border-width: thin;
+  border-radius: 10px;
+  background-color: $grey-10;
+}
+
+// GAME
+
+.my-card-game {
+  width: 240px;
+  height: 250px;
+  border: solid #151414f7;
+  border-width: thin;
+  border-radius: 10px;
+}
+
+.hidden-pokemon {
+  filter: brightness(0);
+}
+.no-underline {
+  text-decoration: none;
+}
+
+.efecto-name-light:hover {
+  cursor: pointer;
+  background-color: $blue-10;
+  color: white;
+}
+.efecto-name-light {
+  background-color: $grey-5;
+}
+
+.efecto-name-dark:hover {
+  cursor: pointer;
+  background-color: $blue-4;
+  color: black;
+}
+.efecto-name-dark {
+  background-color: $grey-9;
+}
+
+// POKE PAGE
+
+.borde {
+  border-radius: 10px;
+}
+
+.poke-card-light {
+  height: 550px;
+  border: solid $grey-7;
+  border-width: thin;
+  border-radius: 10px;
+  background-color: $grey-4;
+}
+
+.poke-card-dark {
+  height: 550px;
+  background-color: $dark;
+}
+
+.poke-border {
+  border: solid $blue-9;
+  border-radius: 10px;
+}

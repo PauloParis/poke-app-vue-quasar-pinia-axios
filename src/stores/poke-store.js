@@ -3,6 +3,8 @@ import { ref } from "vue";
 import { api } from "src/boot/axios";
 
 export const usePokemonStore = defineStore("pokemon", () => {
+  const dark = ref(true);
+
   const pokemones = ref([]);
   const resultados = ref([]);
   const info = ref([]);
@@ -19,7 +21,6 @@ export const usePokemonStore = defineStore("pokemon", () => {
   // obtener los 151 pokemones
   const getPokemons = async () => {
     try {
-      //const res = await api.get("/pokemon?limit=150&offset=0");
       for (let i = 1; i <= 151; i++) {
         let poke = await api.get(`/pokemon/${i}`);
         pokemones.value.push(poke.data);
@@ -121,14 +122,16 @@ export const usePokemonStore = defineStore("pokemon", () => {
   const fav = ref([]);
 
   const favoritePokemon = async (ids) => {
-    for (let i = 0; i < ids.length; i++) {
-      //console.log(ids[i]);
-      const res = await api.get(`/pokemon/${ids[i]}`);
-      fav.value.push(res.data);
+    if (ids != null) {
+      ids = ids.reverse();
+      for (let i = 0; i < ids.length; i++) {
+        //console.log(ids[i]);
+        const res = await api.get(`/pokemon/${ids[i]}`);
+        fav.value.push(res.data);
+      }
+      favorite.value = [...fav.value];
+      fav.value = [];
     }
-    favorite.value = [...fav.value];
-    fav.value = [];
-    //console.log(favorite.value);
   };
 
   return {
@@ -146,5 +149,7 @@ export const usePokemonStore = defineStore("pokemon", () => {
 
     favoritePokemon,
     favorite,
+
+    dark,
   };
 });
