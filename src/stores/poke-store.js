@@ -43,49 +43,56 @@ export const usePokemonStore = defineStore("pokemon", () => {
 
   // obtener los 151 pokemones
   const getPokemons = async () => {
+    Loading.show();
     try {
       const res = await api.get("/pokemon?limit=151&offset=0");
       pokemones.value.push(res.data.results);
     } catch (error) {
       console.log(error);
+    } finally {
+      Loading.hide();
     }
   };
 
   const infoPokemon = async (id) => {
-    const res = await api.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
-
-    let tipo = res.data.types.map(
-      (item) => item.type.name[0].toUpperCase() + item.type.name.substring(1)
-    );
-    let estadistica = res.data.stats.map((item) => [
-      item.stat.name.toUpperCase(),
-      item.base_stat,
-    ]);
-
-    let color = [];
-    bgColor.value.forEach((bg) => {
-      tipo.forEach((type) => {
-        if (type == Object.keys(bg)[0]) {
-          color.push(Object.values(bg)[0]);
-        }
+    Loading.show();
+    try {
+      const res = await api.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
+      let tipo = res.data.types.map(
+        (item) => item.type.name[0].toUpperCase() + item.type.name.substring(1)
+      );
+      let estadistica = res.data.stats.map((item) => [
+        item.stat.name.toUpperCase(),
+        item.base_stat,
+      ]);
+      let color = [];
+      bgColor.value.forEach((bg) => {
+        tipo.forEach((type) => {
+          if (type == Object.keys(bg)[0]) {
+            color.push(Object.values(bg)[0]);
+          }
+        });
       });
-    });
+      let typeColor = [];
+      for (let x = 0; x < tipo.length; x++) {
+        typeColor.push({ type: tipo[x], color: color[x] });
+      }
 
-    let typeColor = [];
-    for (let x = 0; x < tipo.length; x++) {
-      typeColor.push({ type: tipo[x], color: color[x] });
+      poke.value = {
+        id: id,
+        nombre: res.data.name[0].toUpperCase() + res.data.name.substring(1),
+        peso: res.data.weight / 10,
+        altura: res.data.height / 10,
+        image: res.data.sprites.other.dream_world.front_default,
+        tipo: typeColor,
+        estadistica: estadistica,
+        sprites: res.data.sprites,
+      };
+    } catch (error) {
+      console.log(error);
+    } finally {
+      Loading.hide();
     }
-
-    poke.value = {
-      id: id,
-      nombre: res.data.name[0].toUpperCase() + res.data.name.substring(1),
-      peso: res.data.weight / 10,
-      altura: res.data.height / 10,
-      image: res.data.sprites.other.dream_world.front_default,
-      tipo: typeColor,
-      estadistica: estadistica,
-      sprites: res.data.sprites,
-    };
   };
 
   const gamePokemon = async () => {
