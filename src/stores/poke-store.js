@@ -77,7 +77,6 @@ export const usePokemonStore = defineStore("pokemon", () => {
       for (let x = 0; x < tipo.length; x++) {
         typeColor.push({ type: tipo[x], color: color[x] });
       }
-
       poke.value = {
         id: id,
         nombre: res.data.name[0].toUpperCase() + res.data.name.substring(1),
