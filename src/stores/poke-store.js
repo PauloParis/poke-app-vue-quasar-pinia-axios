@@ -5,10 +5,7 @@ import { Loading } from "quasar";
 
 export const usePokemonStore = defineStore("pokemon", () => {
   const dark = ref(true);
-
   const pokemones = ref([]);
-  const resultados = ref([]);
-  const info = ref([]);
   const poke = ref({
     nombre: null,
     peso: null,
@@ -18,24 +15,6 @@ export const usePokemonStore = defineStore("pokemon", () => {
     estadistica: [],
     sprites: [],
   });
-
-  // obtener los 151 pokemones
-  const getPokemons = async () => {
-    Loading.show();
-    try {
-      for (let i = 1; i <= 151; i++) {
-        let poke = await api.get(`/pokemon/${i}`);
-        pokemones.value.push(poke.data);
-      }
-      info.value = [...pokemones.value];
-      pokemones.value = [];
-    } catch (error) {
-      console.log(error);
-    } finally {
-      Loading.hide();
-    }
-  };
-
   const bgColor = ref([
     { Grass: "bg-positive" },
     { Poison: "bg-purple" },
@@ -53,9 +32,27 @@ export const usePokemonStore = defineStore("pokemon", () => {
     { Ice: "bg-light-blue" },
     { Rock: "bg-grey-9" },
   ]);
+  const dataGame = ref({
+    id: null,
+    name: null,
+    img: null,
+  });
+  const randomName = ref([]);
+  const favorite = ref([]);
+  const fav = ref([]);
+
+  // obtener los 151 pokemones
+  const getPokemons = async () => {
+    try {
+      const res = await api.get("/pokemon?limit=151&offset=0");
+      pokemones.value.push(res.data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const infoPokemon = async (id) => {
-    const res = await api.get(`/pokemon/${id}`);
+    const res = await api.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
 
     let tipo = res.data.types.map(
       (item) => item.type.name[0].toUpperCase() + item.type.name.substring(1)
@@ -66,7 +63,6 @@ export const usePokemonStore = defineStore("pokemon", () => {
     ]);
 
     let color = [];
-
     bgColor.value.forEach((bg) => {
       tipo.forEach((type) => {
         if (type == Object.keys(bg)[0]) {
@@ -92,21 +88,11 @@ export const usePokemonStore = defineStore("pokemon", () => {
     };
   };
 
-  const dataGame = ref({
-    id: null,
-    name: null,
-    img: null,
-  });
-  const randomName = ref([]);
-  const estado = ref(false);
-
   const gamePokemon = async () => {
     Loading.show();
     try {
       let randomId = Math.round(Math.random() * (151 - 1) + parseInt(1));
-
       const res = await api.get(`/pokemon/${randomId}`);
-
       let i = 0;
       while (i < 3) {
         let random = Math.round(Math.random() * (151 - 1) + parseInt(1));
@@ -129,16 +115,12 @@ export const usePokemonStore = defineStore("pokemon", () => {
     }
   };
 
-  const favorite = ref([]);
-  const fav = ref([]);
-
   const favoritePokemon = async (ids) => {
     Loading.show();
     try {
       if (ids != null) {
         ids = ids.reverse();
         for (let i = 0; i < ids.length; i++) {
-          //console.log(ids[i]);
           const res = await api.get(`/pokemon/${ids[i]}`);
           fav.value.push(res.data);
         }
@@ -154,8 +136,6 @@ export const usePokemonStore = defineStore("pokemon", () => {
 
   return {
     getPokemons,
-    resultados,
-    info,
     poke,
     infoPokemon,
     pokemones,
@@ -163,7 +143,6 @@ export const usePokemonStore = defineStore("pokemon", () => {
     gamePokemon,
     dataGame,
     randomName,
-    estado,
 
     favoritePokemon,
     favorite,

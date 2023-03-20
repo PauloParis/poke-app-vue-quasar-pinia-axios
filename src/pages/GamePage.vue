@@ -39,7 +39,7 @@
         class="bg-red-3 col-12 col-md-4 text-h6 text-weight-bold q-pa-md text-red-10"
         style="border-radius: 5px"
       >
-        <div class="row justify-center">Intentato de Nuevo!!!</div>
+        <div class="row justify-center">Intentalo de Nuevo!!!</div>
       </div>
     </div>
 
@@ -75,7 +75,7 @@
 
 <script setup>
 import { usePokemonStore } from "src/stores/poke-store.js";
-import { watchEffect, ref } from "vue";
+import { watchEffect, ref, onMounted } from "vue";
 import { useQuasar } from "quasar";
 
 const pokemonStore = usePokemonStore();
@@ -83,6 +83,10 @@ const estado = ref("random");
 const $q = useQuasar();
 
 watchEffect(() => $q.dark.isActive);
+pokemonStore.randomName = [];
+/* onMounted(() => {
+  pokemonStore.randomName = [];
+}); */
 
 pokemonStore.gamePokemon();
 

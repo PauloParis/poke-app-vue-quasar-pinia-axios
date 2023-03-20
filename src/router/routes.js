@@ -9,6 +9,11 @@ const routes = [
       { path: "/pokemon/:id", component: Poke },
       { path: "/game", component: () => import("pages/GamePage.vue") },
       { path: "/favorite", component: () => import("pages/FavoritePage.vue") },
+      { path: "/probando", component: () => import("pages/ProbandoView.vue") },
+      {
+        path: "/gameprobando",
+        component: () => import("pages/GameProbando.vue"),
+      },
     ],
   },
 
