@@ -1,9 +1,7 @@
 <template>
-  <q-page class="q-ma-md row justify-center">
-    <div class="" v-for="(poke, index) in pokemonStore.favorite" :key="index">
-      <div class="col-12">
-        <CardPoke :name="poke.name" :id="poke.id"></CardPoke>
-      </div>
+  <q-page class="q-mx-md q-mt-md row justify-between justify-center-sm">
+    <div v-for="(poke, index) in pokemonStore.favorite" :key="index">
+      <CardPoke :name="poke.name" :id="poke.id"></CardPoke>
     </div>
   </q-page>
 </template>
@@ -12,12 +10,11 @@
 import { usePokemonStore } from "src/stores/poke-store";
 import { watchEffect } from "vue";
 import { useQuasar } from "quasar";
-
 import CardPoke from "src/components/CardPoke.vue";
 
 const pokemonStore = usePokemonStore();
-var array = JSON.parse(localStorage.getItem("favorito"));
-pokemonStore.favoritePokemon(array);
+const favoritos = JSON.parse(localStorage.getItem("favorito")) || [];
+pokemonStore.favoritePokemon(favoritos);
 
 const $q = useQuasar();
 watchEffect(() => $q.dark.isActive);

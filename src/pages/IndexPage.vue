@@ -1,37 +1,25 @@
 <template>
-  <q-page class="q-ma-md row justify-center">
-    <div
-      class=""
-      v-for="(poke, index) in pokemonStore.pokemones[0]"
-      :key="index"
-    >
-      <div class="col-12">
-        <CardPoke :name="poke.name" :id="index + 1"></CardPoke>
-      </div>
+  <FiltroRegion></FiltroRegion>
+  <q-page class="q-mx-md row justify-between justify-center-sm">
+    <div v-for="(poke, index) in pokemonStore.pokemones[0]" :key="index">
+      <CardPoke :name="poke.name" :id="id(poke.url)"></CardPoke>
     </div>
   </q-page>
 </template>
 
 <script setup>
 import { usePokemonStore } from "src/stores/poke-store.js";
-import { onMounted, watchEffect } from "vue";
+import { watchEffect, computed } from "vue";
 import { useQuasar } from "quasar";
-
 import CardPoke from "src/components/CardPoke.vue";
+import FiltroRegion from "src/components/FiltroRegion.vue";
 
 const pokemonStore = usePokemonStore();
+pokemonStore.getPokemons();
+
+const obtenerIdUrl = (url) => parseInt(url.split("/").slice(-2, -1)[0]);
+const id = computed(() => obtenerIdUrl);
+
 const $q = useQuasar();
-
-onMounted(async () => {
-  try {
-    $q.loading.show();
-    await pokemonStore.getPokemons();
-  } catch (error) {
-    console.log(error);
-  } finally {
-    $q.loading.hide();
-  }
-});
-
 watchEffect(() => $q.dark.isActive);
 </script>

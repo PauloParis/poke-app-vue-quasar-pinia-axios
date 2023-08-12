@@ -1,60 +1,36 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh lpR fFf">
     <q-header
-      :class="`row items-center ${
-        $q.dark.isActive ? 'layout-bg-dark' : 'layout-bg-light'
-      }`"
       elevated
-      style="height: 70px"
+      class="text-white"
+      :class="`${$q.dark.isActive ? 'layout-bg-dark' : 'layout-bg-light'}`"
+      height-hint="98"
     >
-      <q-toolbar>
-        <q-toolbar-title class="tamano-letra no-padding">
-          <q-item
-            class="row justify-center text-start"
-            active-class="my-menu-page"
-            exact
-            to="/"
-            @click="pokemonStore.randomName = []"
-            >Pokemones</q-item
-          >
+      <div class="q-mx-md row justify-between">
+        <q-toolbar-title class="q-ml-md no-padding">
+          <div class="row items-center">
+            <img src="../assets/pokelogo.png" alt="" />
+          </div>
         </q-toolbar-title>
-
-        <!-- <q-toolbar-title
-          ><RouterLink
-            active-class="my-menu-page"
-            class="no-underline"
-            to="/"
-            @click="pokemonStore.randomName = []"
-          >
-            Pokemon
-          </RouterLink></q-toolbar-title
-        > -->
-        <q-toolbar-title class="tamano-letra no-padding">
-          <q-item
-            class="row justify-center"
-            active-class="my-menu-page"
-            to="/game"
-          >
-            Juego
-          </q-item></q-toolbar-title
-        >
-        <q-toolbar-title class="tamano-letra no-padding"
-          ><q-item
-            active-class="my-menu-page"
-            class="row justify-center"
-            to="/favorite"
-            @click="pokemonStore.randomName = []"
-            >Favoritos</q-item
-          ></q-toolbar-title
-        >
         <q-toggle
+          class=""
           v-model="pokemonStore.dark"
           checked-icon="dark_mode"
           size="lg"
           unchecked-icon="light_mode"
           @click="modo()"
         />
-      </q-toolbar>
+      </div>
+
+      <q-tabs align="center">
+        <q-route-tab to="/" label="Pokemons" />
+        <q-route-tab
+          to="/game"
+          label="Juego"
+          @click="pokemonStore.randomName = []"
+        />
+        <q-route-tab to="/favorite" label="Favoritos" />
+      </q-tabs>
     </q-header>
 
     <q-page-container>
@@ -77,3 +53,11 @@ const modo = () => {
 
 watchEffect(() => $q.dark.isActive);
 </script>
+
+<style scoped>
+img {
+  width: 100px;
+  object-fit: contain;
+  aspect-ratio: 2/1;
+}
+</style>

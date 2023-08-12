@@ -35,8 +35,8 @@
 // INDEX
 
 .my-card-light {
-  width: 240px;
-  height: 300px;
+  width: 200px;
+  min-height: 200px;
   border: solid $grey-7;
   border-width: thin;
   border-radius: 10px;
@@ -45,12 +45,20 @@
 }
 
 .my-card-dark {
-  width: 240px;
-  height: 300px;
+  width: 200px;
+  min-height: 200px;
   border: solid #151414f7;
   border-width: thin;
   border-radius: 10px;
   background-color: $grey-10;
+}
+
+// INDEX & FAVORITE
+
+@media only screen and (max-width: 512px) {
+  .justify-center-sm {
+    justify-content: center !important;
+  }
 }
 
 // GAME
@@ -65,6 +73,8 @@
 
 .hidden-pokemon {
   filter: brightness(0);
+  user-select: none; /* Evita la selección de texto al arrastrar */
+  pointer-events: none; /* Evita la interacción con la imagen */
 }
 .no-underline {
   text-decoration: none;
@@ -110,4 +120,81 @@
 .poke-border {
   border: solid $blue-9;
   border-radius: 10px;
+}
+
+// FILTRO REGION
+
+.text-filtro-region {
+  color: white;
+  font-weight: 700;
+  background-color: transparent;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 170, 255),
+    rgb(34, 207, 34)
+  );
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.region {
+  font-size: 1rem;
+  border: 3px solid black;
+  border-radius: 20px;
+  background: linear-gradient(
+    to top,
+    rgb(229, 232, 236),
+    var(--background-color)
+  );
+}
+.kanto {
+  --background-color: rgb(224, 92, 100);
+}
+
+.johto {
+  --background-color: rgb(4, 146, 209);
+}
+
+.hoenn {
+  --background-color: rgb(248, 201, 14);
+}
+
+.sinnoh {
+  --background-color: rgb(67, 167, 86);
+}
+
+.teselia {
+  --background-color: rgb(207, 36, 108);
+}
+
+.region:hover {
+  background: var(--background-color);
+  cursor: pointer;
+}
+
+// CARD POKE
+
+.shadow:hover {
+  box-shadow: 0px 0px 20px 10px rgba(41, 222, 28, 0.2);
+  cursor: pointer;
+  transform: scale(1.05);
+  transition: transform 0.5s ease-in-out;
+}
+
+// CARD INFO POKE
+
+.pokefav {
+  width: 25px;
+  aspect-ratio: 4/4;
+  object-fit: contain;
+}
+
+// CARD IMG POKE
+
+.pokeball {
+  width: 50px;
+  height: 50px;
 }
